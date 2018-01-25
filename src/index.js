@@ -56,7 +56,10 @@ export function createReducer<State>(initialState: State): Reducer<State> {
   }
 
   reducer.case = (actionFunc, callback) => {
-    map.set(actionFunc._t, callback)
+    if (map.has(actionFunc)) {
+      throw new Error(`hard-reducer: ${actionFunc._t} already exsits in cases`)
+    }
+    map.set(actionFunc, callback)
     return reducer
   }
   return reducer
