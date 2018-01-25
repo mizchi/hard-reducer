@@ -4,12 +4,12 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "prepare": "npm run build",
-    "test": "npm run test:flow && npm run test:ts && npm run test:with-redux",
-    "test:flow": "flow && nyc babel-node test/flow.js",
-    "test:ts": "tsc --noEmit test/typescript.ts && nyc ts-node test/typescript.ts",
-    "test:with-redux": "nyc babel-node test/with-redux",
-    "build": "babel src -d lib  "
+    "prepare": "run-s test build",
+    "test": "run-p test:*",
+    "test:flow": "flow",
+    "test:ts": "tsc --noEmit test/typescript.ts && ts-node test/typescript.ts",
+    "test:all": "nyc babel-node test/index",
+    "build": "babel src -d lib"
   },
   "devDependencies": {
     "@types/node": "^9.3.0",
@@ -17,6 +17,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-flow": "^6.23.0",
     "flow-bin": "^0.64.0",
+    "npm-run-all": "^4.1.2",
     "nyc": "^11.4.1",
     "redux": "^3.7.2",
     "ts-node": "^4.1.0",

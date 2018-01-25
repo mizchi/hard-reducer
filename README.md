@@ -60,7 +60,28 @@ const ret0 = reducer(initialState, inc(3))
 const ret1 = reducer(ret1, dec(1))
 ```
 
-See more on `index.js.flow`
+See detail in `index.js.flow`
+
+## Error Handling by following FSA
+
+```js
+import { buildActionCreator, createReducer } from 'hard-reducer'
+const { createAction } = buildActionCreator()
+const throwable = createAction('throwable', (val: number) => {
+  if (val === 13) {
+    throw new Error('13 is a sinister number')
+  }
+  return val
+})
+
+const r = createReducer({ value: 0 }).catch(add, (state, error) => {
+  console.log('handle error here')
+  return state
+})
+
+const action = throwable(13) //=> {type: 'throwable', error: true, payload: Error(...) }
+r(undefined, throwable(13))
+```
 
 ## Related projects
 

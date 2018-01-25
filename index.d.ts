@@ -10,12 +10,16 @@ export type Reducer<State> = {
   get: () => Reducer<State>
   case<Input, Payload>(
     actionFunc: ActionCreator<Input, Payload>,
-    callback: (state: State, payload: Payload) => State
+    reducer: (state: State, payload: Payload) => State
+  ): Reducer<State>
+  catch<Input, Payload>(
+    actionFunc: ActionCreator<Input, Payload>,
+    reducer: (State, Error) => State
   ): Reducer<State>
 }
 
 export const buildActionCreator: (
-  opt: { prefix?: string }
+  opt?: { prefix?: string }
 ) => {
   createAction<Input, Payload>(
     t: string,

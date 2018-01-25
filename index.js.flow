@@ -1,23 +1,29 @@
 /* @flow */
 
-type Action<T> = {
+export type Action<T> = {
   type: string,
   payload: T
 }
 
-type ActionCreator<Input, Payload> = Input => Action<Payload>
+export type ActionCreator<Input, Payload> = Input => Action<Payload>
 
-type Reducer<State> = {
+export type Reducer<State> = {
   (State, Action<any>): State,
   get: () => Reducer<State>,
   case<Input, Payload>(
     ActionCreator<Input, Payload>,
     (State, Payload) => State
+  ): Reducer<State>,
+  catch<Input, Payload>(
+    ActionCreator<Input, Payload>,
+    (State, Error) => State
   ): Reducer<State>
 }
 
 declare module.exports: {
-  buildActionCreator: ({ prefix?: string }) => {
+  buildActionCreator: (
+    ?{ prefix?: string }
+  ) => {
     createAction<Input, Payload>(
       t: string,
       fn: (Input) => Payload

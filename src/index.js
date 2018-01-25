@@ -1,15 +1,7 @@
 /* @flow */
+import type { Reducer } from '../'
 
-type Reducer<State> = {
-  (State, any): State,
-  get: () => Reducer<State>,
-  case<Input, Payload>(
-    (Input) => Payload,
-    (State, Payload) => State
-  ): Reducer<State>
-}
-
-export function buildActionCreator(opts: { prefix?: string }) {
+export function buildActionCreator(opts: { prefix?: string } = {}) {
   const prefix = opts.prefix || ''
 
   function createAction<Input, Payload>(
@@ -18,9 +10,18 @@ export function buildActionCreator(opts: { prefix?: string }) {
   ): Input => { type: string, payload: Payload } {
     const type = prefix + t
     const fsaFn: any = (input: Input) => {
-      return {
-        type,
-        payload: fn(input)
+      try {
+        const payload = fn(input)
+        return {
+          type,
+          payload
+        }
+      } catch (e) {
+        return {
+          type,
+          error: true,
+          payload: e
+        }
       }
     }
     fsaFn._t = type
@@ -35,7 +36,7 @@ export function buildActionCreator(opts: { prefix?: string }) {
     const fsaFn: any = (input: Input) => {
       return {
         type,
-        payload: Promise.resolve(fn(input))
+        payload: fn(input)
       }
     }
     fsaFn._t = type
@@ -53,18 +54,37 @@ export function buildActionCreator(opts: { prefix?: string }) {
 }
 
 export function createReducer<State>(initialState: State): Reducer<State> {
-  const map = new Map()
+  const handlerMap = new Map()
+  const errorHandlerMap = new Map()
 
-  const reducer: any = (state: any = initialState, action: any) => {
-    const handler = map.get(action.type)
-    return handler ? handler(state, action.payload) : state
+  const reducer: any = (
+    state: State | void = initialState,
+    action: { type: string, payload: any }
+  ) => {
+    if (action.payload instanceof Error && errorHandlerMap.has(action.type)) {
+      const handler: any = errorHandlerMap.get(action.type)
+      return handler(state, action.payload)
+    } else if (handlerMap.has(action.type)) {
+      const handler: any = handlerMap.get(action.type)
+      return handler(state, action.payload)
+    } else {
+      return state
+    }
   }
 
-  reducer.case = (actionFunc, callback) => {
-    if (map.has(actionFunc._t)) {
+  reducer.case = (actionFunc, _reducer) => {
+    if (handlerMap.has(actionFunc._t)) {
       throw new Error(`hard-reducer: ${actionFunc._t} already exsits in cases`)
     }
-    map.set(actionFunc._t, callback)
+    handlerMap.set(actionFunc._t, _reducer)
+    return reducer
+  }
+
+  reducer.catch = (actionFunc, _reducer) => {
+    if (errorHandlerMap.has(actionFunc._t)) {
+      throw new Error(`hard-reducer: ${actionFunc._t} already exsits in catch`)
+    }
+    errorHandlerMap.set(actionFunc._t, _reducer)
     return reducer
   }
   return reducer
