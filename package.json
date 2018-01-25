@@ -6,20 +6,24 @@
   "scripts": {
     "prepare": "npm run build",
     "test": "flow && babel-node test/for-flow.test.js",
+    "test:ts": "tsc --noEmit test/test.ts",
     "build": "babel src -d lib"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-flow": "^6.23.0",
-    "flow-bin": "^0.64.0"
+    "flow-bin": "^0.64.0",
+    "typescript": "^2.6.2"
   },
   "files": [
     "lib",
     "index.js",
     "index.js.flow",
+    "index.d.ts",
     "types.js"
   ],
+  "typings": "index.d.ts",
   "repository": "git@github.com:mizchi/hard-reducer.git",
   "author": "mizchi <miz404@gmail.com>"
 }
