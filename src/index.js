@@ -1,17 +1,18 @@
 /* @flow */
+import uuid from 'uuid'
 import type { Reducer } from '../'
 
 export function buildActionCreator(opts: { prefix?: string } = {}) {
   const prefix = opts.prefix || ''
 
   function createAction<Input, Payload>(
-    t: string,
-    fn: Input => Payload
+    t: string = uuid(),
+    fn?: Input => Payload
   ): Input => { type: string, payload: Payload } {
     const type = prefix + t
     const fsaFn: any = (input: Input) => {
       try {
-        const payload = fn(input)
+        const payload = fn ? fn(input) : null
         return {
           type,
           payload
@@ -29,7 +30,7 @@ export function buildActionCreator(opts: { prefix?: string } = {}) {
   }
 
   function createPromiseAction<Input, Payload>(
-    t: string,
+    t: string = uuid(),
     fn: Input => Promise<Payload>
   ): Input => Promise<Payload> {
     const type = prefix + t

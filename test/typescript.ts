@@ -1,6 +1,7 @@
-import { buildActionCreator, createReducer } from '../';
-const { createAction } = buildActionCreator({ prefix: 'counter/' });
+import { buildActionCreator, createReducer } from '../'
+const { createAction } = buildActionCreator({ prefix: 'counter/' })
 
+const reset = createAction()
 const inc = createAction('inc', (val: number) => val)
 const dec = createAction('dec', (val: number) => val)
 
@@ -23,9 +24,12 @@ const reducer = createReducer(initialState)
       value: state.value - p
     }
   })
+  .case(reset, state => {
+    return initialState
+  })
 
 // Use it
-const assert = require('assert');
+const assert = require('assert')
 
 const ret0 = reducer(initialState, inc(3))
 const ret1 = reducer(ret0, dec(1))

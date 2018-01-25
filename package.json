@@ -1,11 +1,11 @@
 {
   "name": "hard-reducer",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
     "prepare": "run-s test build",
-    "test": "run-p test:*",
+    "test": "yarn build && run-p test:*",
     "test:flow": "flow",
     "test:ts": "tsc --noEmit test/typescript.ts && ts-node test/typescript.ts",
     "test:all": "nyc babel-node test/index",
@@ -33,5 +33,8 @@
   ],
   "typings": "index.d.ts",
   "repository": "git@github.com:mizchi/hard-reducer.git",
-  "author": "mizchi <miz404@gmail.com>"
+  "author": "mizchi <miz404@gmail.com>",
+  "dependencies": {
+    "uuid": "^3.2.1"
+  }
 }

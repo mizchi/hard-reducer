@@ -1,5 +1,11 @@
 # ChangeLog
 
+## v0.3.0
+
+* Promise Support
+* Remove `createSimpleAction(type)`. Use just `createAction(type)`
+* `createAction()` has type as `uuid()`
+
 ## v0.2.3
 
 * Simplize types

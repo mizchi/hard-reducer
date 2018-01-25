@@ -22,12 +22,11 @@ export const buildActionCreator: (
   opt?: { prefix?: string }
 ) => {
   createAction<Input, Payload>(
-    t: string,
-    fn: (input: Input) => Payload
+    t?: string | void,
+    fn?: (input: Input) => Payload
   ): ActionCreator<Input, Payload>
-  createSimpleAction(t: string): ActionCreator<void, void>
   createPromiseAction<Input, Payload>(
-    t: string,
+    t: string | void,
     fn: (input: Input) => Promise<Payload>
   ): ActionCreator<Input, Payload>
 }

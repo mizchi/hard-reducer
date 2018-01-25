@@ -2,15 +2,11 @@
 import assert from 'assert'
 import { buildActionCreator, createReducer } from '../'
 
-const {
-  createAction,
-  createSimpleAction,
-  createPromiseAction
-} = buildActionCreator({
+const { createAction, createPromiseAction } = buildActionCreator({
   prefix: 'counter/'
 })
 
-const reset = createSimpleAction('reset')
+const reset = createAction()
 const inc = createAction('inc', (val: number) => val)
 const dec = createAction('dec', (val: number) => val)
 const incAsync = createPromiseAction('inc-async', (val: number) => {
@@ -34,14 +30,12 @@ const r = createReducer(initialState)
   })
   // require redux-promise-middleware
   .case(incAsync, (state, payload) => {
-    const ret: number = payload
+    const p: number = payload
     // $ExpectError
-    const ret2: string = payload
+    const pe: string = payload
     return initialState
   })
-  .case(reset, (state, payload) => {
-    // $ExpectError
-    const ret: number = payload
+  .case(reset, state => {
     return initialState
   })
 
@@ -53,3 +47,4 @@ assert(ret0.value === 3)
 assert(ret1.value === 0)
 assert(ret2.value === -2)
 assert(inc(1).type === 'counter/inc')
+assert(reset(1).type.indexOf('counter/') > -1)
