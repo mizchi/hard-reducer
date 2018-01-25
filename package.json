@@ -1,6 +1,6 @@
 {
   "name": "hard-reducer",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -8,24 +8,17 @@
     "test": "npm run test:flow && npm run test:ts",
     "test:flow": "flow && babel-node test/flow.js",
     "test:ts": "tsc --noEmit test/typescript.ts && ts-node test/typescript.ts",
-    "build": "babel src -d lib"
+    "build": "babel src -d lib  "
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-flow": "^6.23.0",
     "flow-bin": "^0.64.0",
-    "redux": "^3.7.2",
     "ts-node": "^4.1.0",
     "typescript": "^2.6.2"
   },
-  "files": [
-    "lib",
-    "index.js",
-    "index.js.flow",
-    "index.d.ts",
-    "types.js"
-  ],
+  "files": ["lib", "index.js", "index.js.flow", "index.d.ts", "types.js"],
   "typings": "index.d.ts",
   "repository": "git@github.com:mizchi/hard-reducer.git",
   "author": "mizchi <miz404@gmail.com>"
