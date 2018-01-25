@@ -82,7 +82,6 @@ See more on `index.js.flow`
 
 ## TODO
 
-* TypeScript support by index.d.ts
 * Error Cases
 
 ## LICENSE
