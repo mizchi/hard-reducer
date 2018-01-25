@@ -14,5 +14,12 @@
     "babel-preset-flow": "^6.23.0",
     "flow-bin": "^0.64.0"
   },
-  "files": ["lib", "index.js", "index.js.flow", "types.js"]
+  "files": [
+    "lib",
+    "index.js",
+    "index.js.flow",
+    "types.js"
+  ],
+  "repository": "git@github.com:mizchi/hard-reducer.git",
+  "author": "mizchi <miz404@gmail.com>"
 }
