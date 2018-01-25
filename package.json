@@ -18,8 +18,10 @@
     "lib",
     "index.js",
     "index.js.flow",
+    "index.d.ts",
     "types.js"
   ],
+  "typings": "index.d.ts",
   "repository": "git@github.com:mizchi/hard-reducer.git",
   "author": "mizchi <miz404@gmail.com>"
 }
