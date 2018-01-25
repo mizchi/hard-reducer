@@ -54,6 +54,10 @@ const reducer = createReducer(initialState)
       value: state.value - payload
     }
   })
+  // Take string
+  .case('other/noop', (state, payload) => {
+    return state
+  })
   ._((state, action) => {
     console.log('default fallback')
     return state

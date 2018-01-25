@@ -11,7 +11,7 @@ export type Reducer<State> = {
   (State, Action<any>): State,
   get: () => Reducer<State>,
   case<Input, Payload>(
-    ActionCreator<Input, Payload>,
+    ActionCreator<Input, Payload> | string,
     (State, Payload) => State
   ): Reducer<State>,
   catch<Input, Payload>(

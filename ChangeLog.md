@@ -1,5 +1,9 @@
 # ChangeLog
 
+## v0.3.2
+
+* `Reducer.case()` can take string as matcher
+
 ## v0.3.1
 
 * Add `Reducer._` as default fallback

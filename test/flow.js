@@ -38,6 +38,9 @@ const r = createReducer(initialState)
   .case(reset, state => {
     return initialState
   })
+  .case('nop', (state, payload) => {
+    return state
+  })
   ._((state, action) => {
     // console.log(action)
     return state
@@ -45,9 +48,10 @@ const r = createReducer(initialState)
 const ret0 = r({ value: 0 }, inc(3))
 const ret1 = r(ret0, reset())
 const ret2 = r(ret1, dec(2))
+const ret3 = r(ret1, { type: 'nop', payload: null })
 
 assert(ret0.value === 3)
 assert(ret1.value === 0)
 assert(ret2.value === -2)
 assert(inc(1).type === 'counter/inc')
-assert(reset(1).type.indexOf('counter/') > -1)
+assert(reset().type.indexOf('counter/') > -1)

@@ -25,11 +25,12 @@ export default function createReducer<State>(
     }
   }
 
-  reducer.case = (actionFunc, _reducer) => {
-    if (handlerMap.has(actionFunc._t)) {
-      throw new Error(`hard-reducer: ${actionFunc._t} already exsits in cases`)
+  reducer.case = (actionFunc: string | Function, _reducer) => {
+    const type = typeof actionFunc === 'string' ? actionFunc : actionFunc._t
+    if (handlerMap.has(type)) {
+      throw new Error(`hard-reducer: ${type} already exsits in cases`)
     }
-    handlerMap.set(actionFunc._t, _reducer)
+    handlerMap.set(type, _reducer)
     return reducer
   }
 
