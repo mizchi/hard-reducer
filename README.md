@@ -1,6 +1,6 @@
 # hard-reducer
 
-Type friendly facade to define reducer.
+Type friendly facade for better reducer.
 
 ```sh
 npm install hard-reducer -S
