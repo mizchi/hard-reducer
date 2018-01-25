@@ -1,5 +1,13 @@
 # ChangeLog
 
+## v0.2.3
+
+* Simplize types
+
+## v0.2.2
+
+* Fix critical bug that reducer.case can not update.
+
 ## v0.2.1
 
 * Throw duprceated case in reducer.

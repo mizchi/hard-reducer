@@ -5,9 +5,10 @@
   "license": "MIT",
   "scripts": {
     "prepare": "npm run build",
-    "test": "npm run test:flow && npm run test:ts",
+    "test": "npm run test:flow && npm run test:ts && npm run test:with-redux",
     "test:flow": "flow && babel-node test/flow.js",
     "test:ts": "tsc --noEmit test/typescript.ts && ts-node test/typescript.ts",
+    "test:with-redux": "babel-node test/with-redux",
     "build": "babel src -d lib  "
   },
   "devDependencies": {
