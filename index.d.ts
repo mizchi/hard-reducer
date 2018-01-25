@@ -1,8 +1,11 @@
-export interface ActionCreator<Input, Payload> {
-  (input: Input): { type: string; payload: Payload }
+export type Action<T> = {
+  type: string
+  payload: T
 }
 
-export interface Reducer<State> {
+export type ActionCreator<Input, Payload> = (input: Input) => Action<Payload>
+
+export type Reducer<State> = {
   (state: State, action: any): State
   get: () => Reducer<State>
   case<Input, Payload>(

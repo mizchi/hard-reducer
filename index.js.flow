@@ -1,5 +1,20 @@
 /* @flow */
-import type { ActionCreator, Reducer } from './types'
+
+type Action<T> = {
+  type: string,
+  payload: T
+}
+
+type ActionCreator<Input, Payload> = Input => Action<Payload>
+
+type Reducer<State> = {
+  (State, Action<any>): State,
+  get: () => Reducer<State>,
+  case<Input, Payload>(
+    ActionCreator<Input, Payload>,
+    (State, Payload) => State
+  ): Reducer<State>
+}
 
 declare module.exports: {
   buildActionCreator: ({ prefix?: string }) => {

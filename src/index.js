@@ -1,5 +1,13 @@
 /* @flow */
-import type { ActionCreator, Reducer } from '../types'
+
+type Reducer<State> = {
+  (State, any): State,
+  get: () => Reducer<State>,
+  case<Input, Payload>(
+    (Input) => Payload,
+    (State, Payload) => State
+  ): Reducer<State>
+}
 
 export function buildActionCreator(opts: { prefix?: string }) {
   const prefix = opts.prefix || ''
@@ -7,7 +15,7 @@ export function buildActionCreator(opts: { prefix?: string }) {
   function createAction<Input, Payload>(
     t: string,
     fn: Input => Payload
-  ): ActionCreator<Input, Payload> {
+  ): Input => { type: string, payload: Payload } {
     const type = prefix + t
     const fsaFn: any = (input: Input) => {
       return {
@@ -21,8 +29,8 @@ export function buildActionCreator(opts: { prefix?: string }) {
 
   function createPromiseAction<Input, Payload>(
     t: string,
-    fn: Input => Promise<Payload> | Payload
-  ): ActionCreator<Input, Payload> {
+    fn: Input => Promise<Payload>
+  ): Input => Promise<Payload> {
     const type = prefix + t
     const fsaFn: any = (input: Input) => {
       return {
@@ -34,7 +42,7 @@ export function buildActionCreator(opts: { prefix?: string }) {
     return fsaFn
   }
 
-  function createSimpleAction(t: string): ActionCreator<void, void> {
+  function createSimpleAction(t: string): () => void {
     const type = prefix + t
     const fsaFn: any = () => ({ type })
     fsaFn._t = type

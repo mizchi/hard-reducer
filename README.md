@@ -58,23 +58,6 @@ const ret0 = reducer(initialState, inc(3))
 const ret1 = reducer(ret1, dec(1))
 ```
 
-Use with explicit types. (Flow only yet)
-
-```js
-/* @flow */
-import { buildActionCreator } from 'hard-reducer'
-import type { ActionCreator, Reducer } from 'hard-reducer/types'
-
-const { createAction } = buildActionCreator({ prefix: 'xxx/' })
-const foo: ActionCreator<number, string> = createAction('foo', (val: number) =>
-  val.toString()
-)
-
-const reducer: Reducer<{
-  /* type definition */
-}> = createReducer(/* initialState */)
-```
-
 See more on `index.js.flow`
 
 ## Related projects
