@@ -4,25 +4,25 @@ import type { ActionCreator, Reducer } from '../types'
 export function buildActionCreator(opts: { prefix?: string }) {
   const prefix = opts.prefix || ''
 
-  function createAction<Constraint: string, Input, Payload>(
-    t: Constraint,
+  function createAction<Input, Payload>(
+    t: string,
     fn: Input => Payload
-  ): ActionCreator<Constraint, Input, Payload> {
+  ): ActionCreator<Input, Payload> {
     const type = prefix + t
     const fsaFn: any = (input: Input) => {
       return {
         type,
-        payload: fn && fn(input)
+        payload: fn(input)
       }
     }
     fsaFn._t = type
     return fsaFn
   }
 
-  function createPromiseAction<Constraint: string, Input, Payload>(
-    t: Constraint,
+  function createPromiseAction<Input, Payload>(
+    t: string,
     fn: Input => Promise<Payload> | Payload
-  ): ActionCreator<Constraint, Input, Payload> {
+  ): ActionCreator<Input, Payload> {
     const type = prefix + t
     const fsaFn: any = (input: Input) => {
       return {
@@ -34,9 +34,7 @@ export function buildActionCreator(opts: { prefix?: string }) {
     return fsaFn
   }
 
-  function createSimpleAction<Constraint: string>(
-    t: Constraint
-  ): ActionCreator<Constraint, void, void> {
+  function createSimpleAction(t: string): ActionCreator<void, void> {
     const type = prefix + t
     const fsaFn: any = () => ({ type })
     fsaFn._t = type
@@ -47,7 +45,6 @@ export function buildActionCreator(opts: { prefix?: string }) {
 }
 
 export function createReducer<State>(initialState: State): Reducer<State> {
-  let freezed = false
   const map = new Map()
 
   const reducer: any = (state: any = initialState, action: any) => {
@@ -56,10 +53,10 @@ export function createReducer<State>(initialState: State): Reducer<State> {
   }
 
   reducer.case = (actionFunc, callback) => {
-    if (map.has(actionFunc)) {
+    if (map.has(actionFunc._t)) {
       throw new Error(`hard-reducer: ${actionFunc._t} already exsits in cases`)
     }
-    map.set(actionFunc, callback)
+    map.set(actionFunc._t, callback)
     return reducer
   }
   return reducer
