@@ -3,17 +3,15 @@ import type { ActionCreator, Reducer } from './types'
 
 declare module.exports: {
   buildActionCreator: ({ prefix?: string }) => {
-    createAction<Constraint: string, Input, Payload>(
-      t: Constraint,
+    createAction<Input, Payload>(
+      t: string,
       fn: (Input) => Payload
-    ): ActionCreator<Constraint, Input, Payload>,
-    createSimpleAction<Constraint: string>(
-      t: Constraint
-    ): ActionCreator<Constraint, void, void>,
-    createPromiseAction<Constraint: string, Input, Payload>(
-      t: Constraint,
+    ): ActionCreator<Input, Payload>,
+    createSimpleAction(t: string): ActionCreator<void, void>,
+    createPromiseAction<Input, Payload>(
+      t: string,
       fn: (Input) => Promise<Payload>
-    ): ActionCreator<Constraint, Input, Payload>
+    ): ActionCreator<Input, Payload>
   },
   createReducer: <T>(T) => Reducer<T>
 }

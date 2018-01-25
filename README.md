@@ -63,9 +63,8 @@ import { buildActionCreator } from 'hard-reducer'
 import type { ActionCreator, Reducer } from 'hard-reducer/types'
 
 const { createAction } = buildActionCreator({ prefix: 'xxx/' })
-const foo: ActionCreator<'foo', number, string> = createAction(
-  'foo',
-  (val: number) => val.toString()
+const foo: ActionCreator<number, string> = createAction('foo', (val: number) =>
+  val.toString()
 )
 
 const reducer: Reducer<{
