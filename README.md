@@ -21,8 +21,11 @@ Check this code to know detail.
 
 ## Examples
 
+This code is runnable in both flowtype and typescript
+
 ```js
 /* @flow */
+// ^ flow magic comment to activate. It will be ignored in typescript.
 import { buildActionCreator, createReducer } from 'hard-reducer'
 const { createAction } = buildActionCreator({ prefix: 'counter/' })
 
@@ -33,7 +36,7 @@ inc(1) //=> { type: 'counter/inc', payload: 1 }
 
 type State = { value: number }
 
-const initialState = { value: 0 }
+const initialState: State = { value: 0 }
 
 const reducer = createReducer(initialState)
   // Handle `(State, Payload) => State` in matched context.
@@ -55,7 +58,7 @@ const ret0 = reducer(initialState, inc(3))
 const ret1 = reducer(ret1, dec(1))
 ```
 
-Use with explicit types.
+Use with explicit types. (Flow only yet)
 
 ```js
 /* @flow */
@@ -82,7 +85,8 @@ See more on `index.js.flow`
 
 ## TODO
 
-* Error Cases
+* [x] TypeScript support by index.d.ts
+* [ ] Error Cases
 
 ## LICENSE
 
