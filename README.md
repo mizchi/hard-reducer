@@ -1,5 +1,7 @@
 # hard-reducer
 
+[![CircleCI](https://circleci.com/gh/mizchi/hard-reducer.svg?style=svg)](https://circleci.com/gh/mizchi/hard-reducer)
+
 Type friendly facade for better reducer.
 
 ```sh
