@@ -70,7 +70,7 @@ const ret1 = reducer(ret1, dec(1))
 
 See detail in `index.js.flow`
 
-### Error Handling by following FSA
+### Error Handling as FSA
 
 ```js
 import { buildActionCreator, createReducer } from 'hard-reducer'
@@ -91,7 +91,7 @@ const action = throwable(13) //=> {type: 'throwable', error: true, payload: Erro
 r(undefined, throwable(13))
 ```
 
-### With Promise
+### with Promise (redux-promise)
 
 ```js
 /* @flow */
