@@ -17,7 +17,8 @@ export type Reducer<State> = {
   catch<Input, Payload>(
     ActionCreator<Input, Payload>,
     (State, Error) => State
-  ): Reducer<State>
+  ): Reducer<State>,
+  _((State, Action<*>) => State): Reducer<State>
 }
 
 declare module.exports: {

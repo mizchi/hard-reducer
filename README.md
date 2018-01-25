@@ -54,6 +54,10 @@ const reducer = createReducer(initialState)
       value: state.value - payload
     }
   })
+  ._((state, action) => {
+    console.log('default fallback')
+    return state
+  })
 
 // Use it
 const ret0 = reducer(initialState, inc(3))

@@ -1,5 +1,9 @@
 # ChangeLog
 
+## v0.3.1
+
+* Add `Reducer._` as default fallback
+
 ## v0.3.0
 
 * Promise Support

@@ -27,6 +27,10 @@ const reducer = createReducer(initialState)
   .case(reset, state => {
     return initialState
   })
+  ._((state, action) => {
+    // console.log(action)
+    return state
+  })
 
 // Use it
 const assert = require('assert')

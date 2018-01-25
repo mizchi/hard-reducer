@@ -38,7 +38,10 @@ const r = createReducer(initialState)
   .case(reset, state => {
     return initialState
   })
-
+  ._((state, action) => {
+    // console.log(action)
+    return state
+  })
 const ret0 = r({ value: 0 }, inc(3))
 const ret1 = r(ret0, reset())
 const ret2 = r(ret1, dec(2))

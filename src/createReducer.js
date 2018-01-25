@@ -6,6 +6,7 @@ export default function createReducer<State>(
 ): Reducer<State> {
   const handlerMap = new Map()
   const errorHandlerMap = new Map()
+  let defaultFunc: ?Function = null
 
   const reducer: Function = (
     state: State | void = initialState,
@@ -17,6 +18,8 @@ export default function createReducer<State>(
     } else if (handlerMap.has(action.type)) {
       const handler: any = handlerMap.get(action.type)
       return handler(state, action.payload)
+    } else if (defaultFunc) {
+      return defaultFunc(state, action)
     } else {
       return state
     }
@@ -37,5 +40,14 @@ export default function createReducer<State>(
     errorHandlerMap.set(actionFunc._t, _reducer)
     return reducer
   }
+
+  reducer._ = _reducer => {
+    if (defaultFunc) {
+      throw new Error(`hard-reducer: default func already exsits`)
+    }
+    defaultFunc = _reducer
+    return reducer
+  }
+
   return reducer
 }

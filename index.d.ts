@@ -16,6 +16,7 @@ export type Reducer<State> = {
     actionFunc: ActionCreator<Input, Payload>,
     reducer: (State, Error) => State
   ): Reducer<State>
+  _(fn: (s: State, a: Action<any>) => State): Reducer<State>
 }
 
 export const buildActionCreator: (
