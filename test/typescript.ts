@@ -25,6 +25,11 @@ const reducer = createReducer(initialState)
   })
 
 // Use it
+const assert = require('assert');
+
 const ret0 = reducer(initialState, inc(3))
 const ret1 = reducer(ret0, dec(1))
 
+assert(ret0.value === 3)
+assert(ret1.value === 2)
+assert(inc(1).type === 'counter/inc')
