@@ -34,9 +34,10 @@ export function buildActionCreator(opts: { prefix?: string } = {}) {
   ): Input => Promise<Payload> {
     const type = prefix + t
     const fsaFn: any = (input: Input) => {
+      const payload = fn(input)
       return {
         type,
-        payload: fn(input)
+        payload
       }
     }
     fsaFn._t = type
