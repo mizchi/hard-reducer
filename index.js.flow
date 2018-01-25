@@ -1,0 +1,30 @@
+/* @flow */
+type ActionCreator<Constraint: string, Input, Payload> = {
+  (Input): { type: Constraint, payload: Payload }
+}
+
+type Reducer<State> = {
+  (State, any): State,
+  get: () => Reducer<State>,
+  case<Constraint, Input, Payload>(
+    ActionCreator<Constraint, Input, Payload>,
+    (State, Payload) => State
+  ): Reducer<State>
+}
+
+declare module.exports: {
+  buildActionCreator: ({ prefix?: string }) => {
+    createAction<Constraint: string, Input, Payload>(
+      t: Constraint,
+      fn: (Input) => Payload
+    ): ActionCreator<Constraint, Input, Payload>,
+    createSimpleAction<Constraint: string>(
+      t: Constraint
+    ): ActionCreator<Constraint, void, void>,
+    createPromiseAction<Constraint: string, Input, Payload>(
+      t: Constraint,
+      fn: (Input) => Promise<Payload>
+    ): ActionCreator<Constraint, Input, Payload>
+  },
+  createReducer: <T>(T) => Reducer<T>
+}
