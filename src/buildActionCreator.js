@@ -11,7 +11,7 @@ export default function buildActionCreator(opts: { prefix?: string } = {}) {
     const type = prefix + t
     const fsaFn: any = (input: Input) => {
       try {
-        // covert result by fn modifier
+        // covert input by fn modifier
         const payload = fn ? fn(input) : input
         return {
           type,
@@ -29,21 +29,44 @@ export default function buildActionCreator(opts: { prefix?: string } = {}) {
     return fsaFn
   }
 
-  function createPromiseAction<Input, Payload>(
+  function createAsyncAction<Input, Payload>(
     t: string = uuid(),
     fn: Input => Promise<Payload>
-  ): Input => Promise<Payload> {
+  ): {
+    started: string,
+    resolved: string,
+    rejected: string
+  } {
     const type = prefix + t
-    const fsaFn: any = (input: Input) => {
-      const payload = fn(input)
-      return {
-        type,
-        payload
-      }
+    const started = type + '/started'
+    const resolved = type + '/resolved'
+    const rejected = type + '/rejected'
+
+    const fsaFn: any = input => dispatch => {
+      dispatch({ type: started })
+      return fn(input)
+        .then(ret => {
+          dispatch({
+            type: resolved,
+            payload: ret
+          })
+          return ret
+        })
+        .catch(err => {
+          dispatch({
+            type: rejected
+          })
+          return err
+        })
     }
-    fsaFn._t = type
-    return fsaFn
+
+    const retFn: any = (input: Input) => fsaFn(input)
+    retFn.started = started
+    retFn.resolved = resolved
+    retFn.rejected = rejected
+
+    return retFn
   }
 
-  return { createAction, createPromiseAction, prefix }
+  return { createAction, createAsyncAction, prefix }
 }

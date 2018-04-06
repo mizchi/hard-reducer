@@ -2,14 +2,14 @@
 import assert from 'assert'
 import { buildActionCreator, createReducer, type ActionCreator } from '../'
 
-const { createAction, createPromiseAction } = buildActionCreator({
+const { createAction, createAsyncAction } = buildActionCreator({
   prefix: 'counter/'
 })
 
 const reset = createAction()
 const inc = createAction('inc', (val: number) => val)
 const dec = createAction('dec', (val: number) => val)
-const incAsync = createPromiseAction('inc-async', (val: number) => {
+const incAsync = createAsyncAction('inc-async', (val: number) => {
   return Promise.resolve(val)
 })
 // typed with ActionCreator
@@ -30,11 +30,16 @@ const r = createReducer(initialState)
       value: state.value - payload
     }
   })
-  // require redux-promise-middleware
-  .case(incAsync, (state, payload) => {
-    const p: number = payload
+  // require redux-thunk
+  .case(incAsync.started, (state, payload) => {
+    return initialState
+  })
+  .case(incAsync.resolved, (state, payload) => {
     // $ExpectError
-    const pe: string = payload
+    const p: string = payload
+    return initialState
+  })
+  .case(incAsync.rejected, (state, error) => {
     return initialState
   })
   .case(reset, state => {

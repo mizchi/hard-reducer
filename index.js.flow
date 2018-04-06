@@ -29,10 +29,14 @@ declare module.exports: {
       t?: string | void,
       fn?: (Input) => Payload
     ): ActionCreator<Input, Payload>,
-    createPromiseAction<Input, Payload>(
+    createAsyncAction<Input, Payload>(
       t?: string | void,
       fn: (Input) => Promise<Payload>
-    ): ActionCreator<Input, Payload>
+    ): {
+      started: ActionCreator<Input, void>,
+      resolved: ActionCreator<Input, Payload>,
+      rejected: ActionCreator<Input, Error>
+    } & (Input => Promise<Payload>)
   },
   createReducer: <T>(T) => Reducer<T>
 }

@@ -14,10 +14,6 @@ export type Reducer<State> = {
     actionFunc: ActionCreator<Input, Payload>,
     reducer: (state: State, payload: Payload) => State
   ): Reducer<State>
-  catch<Input, Payload>(
-    actionFunc: ActionCreator<Input, Payload>,
-    reducer: (State, Error) => State
-  ): Reducer<State>
   else(fn: (s: State, a: Action<any>) => State): Reducer<State>
 }
 
@@ -28,10 +24,14 @@ export const buildActionCreator: (
     t?: string | void,
     fn?: (input: Input) => Payload
   ): ActionCreator<Input, Payload>
-  createPromiseAction<Input, Payload>(
+  createAsyncAction<Input, Payload>(
     t: string | void,
     fn: (input: Input) => Promise<Payload>
-  ): ActionCreator<Input, Payload>
+  ): {
+    started: ActionCreator<Input, void>
+    resolved: ActionCreator<Input, Payload>
+    rejected: ActionCreator<Input, Error>
+  } & ((input: Input) => Promise<Payload>)
 }
 
 export const createReducer: <T>(t: T) => Reducer<T>

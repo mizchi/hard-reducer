@@ -1,30 +1,47 @@
 /* @flow */
 import reduxPromise from 'redux-promise'
+import reduxThunk from 'redux-thunk'
 import { applyMiddleware, createStore } from 'redux'
 import { createReducer, buildActionCreator } from '../'
 
-const { createPromiseAction } = buildActionCreator()
+const { createAsyncAction } = buildActionCreator()
 
-const wait = ms => new Promise(fullfill => setTimeout(fullfill, ms))
-const incAsync = createPromiseAction('inc-async', async (val: number) => {
-  await wait(100)
-  if (val === 13) {
+const incAsync = createAsyncAction('inc-async', async (val: number) => {
+  if (val % 2 === 1) {
     throw new Error('error')
   }
-  return val
+  return {
+    p: 1
+  }
 })
 
-const r = createReducer({ value: 0 })
-  .case(incAsync, (state, payload) => {
-    return { value: state.value + payload }
+type Status = 'ready' | 'started' | 'resolved' | 'rejected'
+type State = { status: Status, payload: ?{ p: number } }
+
+const r = createReducer({ status: 'ready', payload: null })
+  .case(incAsync.started, state => {
+    return { state: 'started' }
   })
-  .catch(incAsync, (state, error) => {
-    console.log('13 has come')
-    return state
+  .case(incAsync.resolved, (state, payload) => {
+    return { state: 'resolve', payload }
+  })
+  .case(incAsync.rejected, (state, error) => {
+    return { state: 'ready', payload: null }
   })
 
-const store = createStore(r, undefined, applyMiddleware(reduxPromise))
+const store = createStore(
+  r,
+  undefined,
+  applyMiddleware(reduxPromise, reduxThunk)
+)
+store.subscribe((...args) => {
+  console.log('store', store.getState())
+})
 
-store.dispatch(incAsync(2))
-store.dispatch(incAsync(4))
-store.dispatch(incAsync(13))
+const test = async () => {
+  await store.dispatch(incAsync(2))
+  await store.dispatch(incAsync(4))
+  await store.dispatch(incAsync(13))
+}
+
+test()
