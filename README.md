@@ -77,63 +77,52 @@ const ret0 = reducer(initialState, inc(3))
 const ret1 = reducer(ret1, dec(1))
 ```
 
-See detail in `index.js.flow`
+See detail in `index.js.flow` or `index.d.ts`
 
-### Error Handling as FSA
+### Handle async action
 
-```js
-import { buildActionCreator, createReducer } from 'hard-reducer'
-const { createAction } = buildActionCreator()
-const throwable = createAction('throwable', (val: number) => {
-  if (val === 13) {
-    throw new Error('13 is a sinister number')
-  }
-  return val
-})
+`createAsyncAction(...)` returns `{ resolved, rejected, started }` and callable method.
 
-const r = createReducer({ value: 0 }).catch(add, (state, error) => {
-  console.log('handle error here')
-  return state
-})
-
-const action = throwable(13) //=> {type: 'throwable', error: true, payload: Error(...) }
-r(undefined, throwable(13))
-```
-
-### with Promise (redux-promise)
+(You need to add `redux-thunk` in store's middlewares)
 
 ```js
 /* @flow */
-import reduxPromise from 'redux-promise'
-import { applyMiddleware, createStore } from 'redux'
 import { createReducer, buildActionCreator } from '../'
+const { createAsyncAction } = buildActionCreator()
 
-const { createPromiseAction } = buildActionCreator()
-
-const wait = ms => new Promise(fullfill => setTimeout(fullfill, ms))
-
-const incAsync = createPromiseAction('inc-async', async (val: number) => {
-  await wait(100)
-  if (val === 13) {
+const incAsync = createAsyncAction('inc-async', async (val: number) => {
+  if (val % 2 === 1) {
     throw new Error('error')
   }
-  return val
+  return {
+    p: 1
+  }
 })
 
-const r = createReducer({ value: 0 })
-  .case(incAsync, (state, payload) => {
-    return { value: state.value + payload }
+type Status = 'ready' | 'started' | 'resolved' | 'rejected'
+type State = { status: Status, payload: ?{ p: number } }
+
+const reducer = createReducer({ status: 'ready', payload: null })
+  .case(incAsync.started, state => {
+    return { state: 'started' }
   })
-  .catch(incAsync, (state, error) => {
-    console.log('13 has come')
-    return state
+  .case(incAsync.resolved, (state, payload) => {
+    return { state: 'resolve', payload }
+  })
+  .case(incAsync.rejected, (state, error) => {
+    return { state: 'ready', payload: null }
   })
 
-const store = createStore(r, undefined, applyMiddleware(reduxPromise))
+// store
+import reduxThunk from 'redux-thunk'
+import { applyMiddleware, createStore } from 'redux'
+const store = createStore(reducer, undefined, applyMiddleware(reduxThunk))
+store.subscribe((...args) => {
+  console.log('store', store.getState())
+})
 
-store.dispatch(incAsync(2))
-store.dispatch(incAsync(4))
-store.dispatch(incAsync(13))
+// dispatch
+store.dispatch(incAsync(1))
 ```
 
 ## Related projects
@@ -143,6 +132,11 @@ store.dispatch(incAsync(13))
 * [acdlite/flux-standard-action: A human-friendly standard for Flux action objects.](https://github.com/acdlite/flux-standard-action)
 
 ## ChangeLog
+
+### v2.0.0
+
+* Add `createAsyncAction(...)`
+* Remove `createPromiseAction(...)`
 
 ### v1.0.0
 
