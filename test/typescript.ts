@@ -47,10 +47,6 @@ const reducer = createReducer(initialState)
   .case(reset, state => {
     return initialState
   })
-  .else((state, action) => {
-    // console.log(action)
-    return state
-  })
   .case(foo, (state, payload) => {
     // $ExpectError
     // const pe: { foo: string } = payload

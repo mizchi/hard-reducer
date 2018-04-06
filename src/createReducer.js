@@ -34,14 +34,6 @@ export default function createReducer<State>(
     return reducer
   }
 
-  reducer.catch = (actionFunc, _reducer) => {
-    if (errorHandlerMap.has(actionFunc._t)) {
-      throw new Error(`hard-reducer: ${actionFunc._t} already exsits in catch`)
-    }
-    errorHandlerMap.set(actionFunc._t, _reducer)
-    return reducer
-  }
-
   reducer.else = _reducer => {
     if (defaultFunc) {
       throw new Error(`hard-reducer: default func already exsits`)
