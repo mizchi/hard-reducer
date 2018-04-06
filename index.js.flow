@@ -14,10 +14,6 @@ export type Reducer<State> = {
     ActionCreator<Input, Payload> | string,
     (State, Payload) => State
   ): Reducer<State>,
-  catch<Input, Payload>(
-    ActionCreator<Input, Payload>,
-    (State, Error) => State
-  ): Reducer<State>,
   else((State, Action<*>) => State): Reducer<State>
 }
 

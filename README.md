@@ -137,6 +137,7 @@ store.dispatch(incAsync(1))
 
 * Add `createAsyncAction(...)`
 * Remove `createPromiseAction(...)`
+* Remove `Reducer.case(...)`
 
 ### v1.0.0
 
