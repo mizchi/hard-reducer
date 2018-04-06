@@ -42,7 +42,7 @@ export default function createReducer<State>(
     return reducer
   }
 
-  reducer._ = _reducer => {
+  reducer.else = _reducer => {
     if (defaultFunc) {
       throw new Error(`hard-reducer: default func already exsits`)
     }

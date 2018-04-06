@@ -3,7 +3,9 @@ export type Action<T> = {
   payload: T
 }
 
-export type ActionCreator<Input, Payload> = (input: Input) => Action<Payload>
+export type ActionCreator<Input, Payload = Input> = (
+  input: Input
+) => Action<Payload>
 
 export type Reducer<State> = {
   (state: State, action: any): State
@@ -16,7 +18,7 @@ export type Reducer<State> = {
     actionFunc: ActionCreator<Input, Payload>,
     reducer: (State, Error) => State
   ): Reducer<State>
-  _(fn: (s: State, a: Action<any>) => State): Reducer<State>
+  else(fn: (s: State, a: Action<any>) => State): Reducer<State>
 }
 
 export const buildActionCreator: (

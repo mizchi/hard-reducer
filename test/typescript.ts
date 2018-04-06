@@ -27,7 +27,7 @@ const reducer = createReducer(initialState)
   .case(reset, state => {
     return initialState
   })
-  ._((state, action) => {
+  .else((state, action) => {
     // console.log(action)
     return state
   })

@@ -11,7 +11,8 @@ export default function buildActionCreator(opts: { prefix?: string } = {}) {
     const type = prefix + t
     const fsaFn: any = (input: Input) => {
       try {
-        const payload = fn ? fn(input) : null
+        // covert result by fn modifier
+        const payload = fn ? fn(input) : input
         return {
           type,
           payload
@@ -44,12 +45,5 @@ export default function buildActionCreator(opts: { prefix?: string } = {}) {
     return fsaFn
   }
 
-  function createSimpleAction(t: string): () => void {
-    const type = prefix + t
-    const fsaFn: any = () => ({ type })
-    fsaFn._t = type
-    return fsaFn
-  }
-
-  return { createAction, createSimpleAction, createPromiseAction }
+  return { createAction, createPromiseAction, prefix }
 }

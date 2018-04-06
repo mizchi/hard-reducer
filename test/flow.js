@@ -1,6 +1,6 @@
 /* @flow */
 import assert from 'assert'
-import { buildActionCreator, createReducer } from '../'
+import { buildActionCreator, createReducer, type ActionCreator } from '../'
 
 const { createAction, createPromiseAction } = buildActionCreator({
   prefix: 'counter/'
@@ -12,6 +12,8 @@ const dec = createAction('dec', (val: number) => val)
 const incAsync = createPromiseAction('inc-async', (val: number) => {
   return Promise.resolve(val)
 })
+// typed with ActionCreator
+const foo: ActionCreator<{ foo: number }> = createAction('foo')
 
 type State = { value: number }
 const initialState = { value: 0 }
@@ -38,10 +40,15 @@ const r = createReducer(initialState)
   .case(reset, state => {
     return initialState
   })
+  .case(foo, (state, payload) => {
+    // $ExpectError
+    const pe: { foo: string } = payload
+    return initialState
+  })
   .case('nop', (state, payload) => {
     return state
   })
-  ._((state, action) => {
+  .else((state, action) => {
     // console.log(action)
     return state
   })

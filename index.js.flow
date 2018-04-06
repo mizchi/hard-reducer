@@ -5,10 +5,10 @@ export type Action<T> = {
   payload: T
 }
 
-export type ActionCreator<Input, Payload> = Input => Action<Payload>
+export type ActionCreator<Input, Payload = Input> = Input => Action<Payload>
 
 export type Reducer<State> = {
-  (State, Action<any>): State,
+  (State, Action<*>): State,
   get: () => Reducer<State>,
   case<Input, Payload>(
     ActionCreator<Input, Payload> | string,
@@ -18,7 +18,7 @@ export type Reducer<State> = {
     ActionCreator<Input, Payload>,
     (State, Error) => State
   ): Reducer<State>,
-  _((State, Action<*>) => State): Reducer<State>
+  else((State, Action<*>) => State): Reducer<State>
 }
 
 declare module.exports: {
@@ -29,8 +29,6 @@ declare module.exports: {
       t?: string | void,
       fn?: (Input) => Payload
     ): ActionCreator<Input, Payload>,
-    // createAction<Input, Payload>(t: string): ActionCreator<void, void>,
-    // createSimpleAction(t: string): ActionCreator<void, void>,
     createPromiseAction<Input, Payload>(
       t?: string | void,
       fn: (Input) => Promise<Payload>

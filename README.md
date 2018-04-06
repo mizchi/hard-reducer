@@ -28,16 +28,24 @@ This code is runnable in both flowtype and typescript
 ```js
 /* @flow */
 // ^ flow magic comment to activate. It will be ignored in typescript.
-import { buildActionCreator, createReducer } from 'hard-reducer'
+
+import {
+  buildActionCreator,
+  createReducer,
+  type ActionCreator
+} from 'hard-reducer'
+// ^ If you use typescript, Do not use `type` before ActionCreator
 const { createAction } = buildActionCreator({ prefix: 'counter/' })
 
-const inc = createAction('inc', (val: number) => val)
+// Add type to your payload by ActionCreator
+const inc: ActionCreator<number> = createAction('inc')
+// or infer by function result
 const dec = createAction('dec', (val: number) => val)
 
 inc(1) //=> { type: 'counter/inc', payload: 1 }
 
+// Define state type
 type State = { value: number }
-
 const initialState: State = { value: 0 }
 
 const reducer = createReducer(initialState)
@@ -58,7 +66,8 @@ const reducer = createReducer(initialState)
   .case('other/noop', (state, payload) => {
     return state
   })
-  ._((state, action) => {
+  // Take all uncaught action, not payload!
+  .else((state, action) => {
     console.log('default fallback')
     return state
   })
