@@ -7,7 +7,7 @@
     "prepare": "run-s test build",
     "test": "yarn build && run-p test:*",
     "test:flow": "flow",
-    "test:ts": "tsc --noEmit test/typescript.ts && ts-node test/typescript.ts",
+    "test:ts": "tsc --noEmit --lib ES2015 test/typescript.ts && ts-node test/typescript.ts",
     "test:all": "nyc babel-node test/index",
     "build": "babel src -d lib"
   },
