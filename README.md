@@ -142,11 +142,13 @@ store.dispatch(incAsync(13))
 * [aikoven/typescript-fsa: Type-safe action creator utilities](https://github.com/aikoven/typescript-fsa)
 * [acdlite/flux-standard-action: A human-friendly standard for Flux action objects.](https://github.com/acdlite/flux-standard-action)
 
-## TODO
+## ChangeLog
 
-* [x] TypeScript support by index.d.ts
-* [x] Error Cases
-* [x] Promise rejection
+### v1.0.0
+
+* Add `ActionCreator<Payload>` with one argument
+* `createAction(string)` uses `i => i` as default creator function
+* Rename `reducer._(...)` => `reducer.else(...)`
 
 ## LICENSE
 
