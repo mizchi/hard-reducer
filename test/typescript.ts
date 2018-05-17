@@ -9,6 +9,8 @@ const dec = createAction('dec', (val: number) => val)
 // typed with ActionCreator
 const foo: ActionCreator<{ foo: number }> = createAction('foo')
 
+const _type: string = inc.type
+
 const incAsync = createAsyncAction('inc-async', async (val: number) => {
   return val
 })

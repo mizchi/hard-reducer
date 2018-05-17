@@ -3,9 +3,10 @@ export type Action<T> = {
   payload: T
 }
 
-export type ActionCreator<Input, Payload = Input> = (
-  input: Input
-) => Action<Payload>
+export type ActionCreator<Input, Payload = Input> = {
+  (Input): Action<Payload>
+  type: string
+}
 
 export type Reducer<State> = {
   (state: State, action: any): State

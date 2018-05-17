@@ -25,7 +25,7 @@ export default function buildActionCreator(opts: { prefix?: string } = {}) {
         }
       }
     }
-    fsaFn._t = type
+    fsaFn.type = type
     return fsaFn
   }
 

@@ -15,6 +15,9 @@ const incAsync = createAsyncAction('inc-async', (val: number) => {
 // typed with ActionCreator
 const foo: ActionCreator<{ foo: number }> = createAction('foo')
 
+// $ExpectError
+const _type: number = inc.type
+
 type State = { value: number }
 const initialState = { value: 0 }
 const r = createReducer(initialState)
