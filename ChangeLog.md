@@ -1,5 +1,9 @@
 # ChangeLog
 
+## v2.1.0
+
+* Expose actionCreator's type as string
+
 ## v0.3.2
 
 * `Reducer.case()` can take string as matcher
