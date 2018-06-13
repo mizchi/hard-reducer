@@ -1,6 +1,6 @@
 # hard-reducer
 
-[![CircleCI](https://circleci.com/gh/mizchi/hard-reducer.svg?style=svg)](https://circleci.com/gh/mizchi/hard-reducer)
+[![CircleCI](https://circleci.com/gh/mizchi/hard-reducer.svg?style=svg)](https://circleci.com/gh/mizchi/hard-reducer) [![Greenkeeper badge](https://badges.greenkeeper.io/mizchi/hard-reducer.svg)](https://greenkeeper.io/)
 
 Type friendly facade for better reducer.
 
