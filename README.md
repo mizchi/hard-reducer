@@ -5,7 +5,7 @@
 Type friendly facade for better reducer.
 
 ```sh
-npm install hard-reducer -S
+npm install hard-reducer --save
 # or
 yarn add hard-reducer
 ```
