@@ -4,7 +4,7 @@ export type Action<T> = {
 }
 
 export type ActionCreator<Input, Payload = Input> = {
-  (Input): Action<Payload>
+  (input: Input): Action<Payload>
   type: string
 }
 
