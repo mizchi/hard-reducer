@@ -1,44 +1,49 @@
 # ChangeLog
 
+## v2.3.0
+
+- Add `createThunkAction`
+- Drop redux-promise dependencies
+
 ## v2.1.0
 
-* Expose actionCreator's type as string
+- Expose actionCreator's type as string
 
 ## v0.3.2
 
-* `Reducer.case()` can take string as matcher
+- `Reducer.case()` can take string as matcher
 
 ## v0.3.1
 
-* Add `Reducer._` as default fallback
+- Add `Reducer._` as default fallback
 
 ## v0.3.0
 
-* Promise Support
-* Remove `createSimpleAction(type)`. Use just `createAction(type)`
-* `createAction()` has type as `uuid()`
+- Promise Support
+- Remove `createSimpleAction(type)`. Use just `createAction(type)`
+- `createAction()` has type as `uuid()`
 
 ## v0.2.3
 
-* Simplize types
+- Simplize types
 
 ## v0.2.2
 
-* Fix critical bug that reducer.case can not update.
+- Fix critical bug that reducer.case can not update.
 
 ## v0.2.1
 
-* Throw duprceated case in reducer.
+- Throw duprceated case in reducer.
 
 ## v0.2.0
 
-* Remove `Constraint` type interface in `ActionCreator`
+- Remove `Constraint` type interface in `ActionCreator`
 
 ## v0.1.1
 
-* Support TypeScript
+- Support TypeScript
 
 ## v0.1.0
 
-* Support FlowType
-* Published
+- Support FlowType
+- Published

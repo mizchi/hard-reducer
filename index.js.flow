@@ -28,6 +28,7 @@ declare module.exports: {
       t?: string | void,
       fn?: (Input) => Payload
     ): ActionCreator<Input, Payload>,
+    
     createAsyncAction<Input, Payload>(
       t?: string | void,
       fn: (Input) => Promise<Payload>
@@ -35,7 +36,16 @@ declare module.exports: {
       started: ActionCreator<Input, void>,
       resolved: ActionCreator<Input, Payload>,
       rejected: ActionCreator<Input, Error>
-    } & (Input => Promise<Payload>)
+    } & (Input => Promise<Payload>),
+
+    createThunkAction<Input, A: any, S: any, R: any>(
+      t: string | void,
+      fn: (Input, dispatch: (a: A) => any, getState: () => S) => Promise<R>
+    ): {
+      started: ActionCreator<Input, void>,
+      resolved: ActionCreator<Input, R>,
+      rejected: ActionCreator<Input, Error>
+    } & (Input => void)
   },
   createReducer: <T>(T) => Reducer<T>
 }

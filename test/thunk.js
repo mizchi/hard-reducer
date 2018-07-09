@@ -3,40 +3,43 @@ import { applyMiddleware, createStore } from "redux";
 import reduxThunk from "redux-thunk";
 import { buildActionCreator, createReducer } from "../";
 
-const { createAsyncAction } = buildActionCreator();
+const { createThunkAction, createAction } = buildActionCreator();
 
-const incAsync = createAsyncAction("inc-async", async (val: number) => {
-  if (val % 2 === 1) {
-    throw new Error("error");
+const inc = createAction("inc", (val: number) => val);
+
+const thunked = createThunkAction(
+  "thunked",
+  async (input, dispatch, getState) => {
+    dispatch(inc(input.value));
+    return { ret: true };
   }
-  return {
-    p: 1
-  };
-});
+);
 
 type Status = "ready" | "started" | "resolved" | "rejected";
 type State = { status: Status, payload: ?{ p: number } };
 
 const r = createReducer({ status: "ready", payload: null })
-  .case(incAsync.started, state => {
-    return { state: "started" };
+  .case(inc, (state, payload) => {
+    return { state: "ready", payload };
   })
-  .case(incAsync.resolved, (state, payload) => {
+  .case(thunked.started, state => {
+    return { state: "started", payload: null };
+  })
+  .case(thunked.resolved, (state, payload) => {
     return { state: "resolve", payload };
   })
-  .case(incAsync.rejected, (state, error) => {
+  .case(thunked.rejected, (state, error) => {
     return { state: "ready", payload: null };
   });
 
 const store = createStore(r, undefined, applyMiddleware(reduxThunk));
+
 store.subscribe((...args) => {
   console.log("store", store.getState());
 });
 
 const test = async () => {
-  await store.dispatch(incAsync(2));
-  await store.dispatch(incAsync(4));
-  await store.dispatch(incAsync(13));
+  store.dispatch(thunked({ value: 1 }));
 };
 
 test();

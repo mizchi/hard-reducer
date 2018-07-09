@@ -1,13 +1,30 @@
-export type Action<T> = {
+// Actions
+
+export type Action<Payload> = {
   type: string;
-  payload: T;
+  payload: Payload;
 };
+
+// Action Creator
 
 export type ActionCreator<Input, Payload = Input> = {
   (input: Input): Action<Payload>;
   type: string;
 };
 
+export type AsyncActionCreator<Input, Payload> = {
+  started: ActionCreator<Input, void>;
+  resolved: ActionCreator<Input, Payload>;
+  rejected: ActionCreator<Input, Error>;
+} & ((input: Input) => Promise<Payload>);
+
+export type ThunkActionCreator<Input, A = any, R = any> = {
+  started: ActionCreator<Input, void>;
+  resolved: ActionCreator<Input, R>;
+  rejected: ActionCreator<Input, Error>;
+} & ((input: Input) => void);
+
+// Reducer helper
 export type Reducer<State> = {
   (state: State, action: any): State;
   get: () => Reducer<State>;
@@ -18,11 +35,7 @@ export type Reducer<State> = {
   else(fn: (s: State, a: Action<any>) => State): Reducer<State>;
 };
 
-export type AsyncAction<Input, Payload> = {
-  started: ActionCreator<Input, void>;
-  resolved: ActionCreator<Input, Payload>;
-  rejected: ActionCreator<Input, Error>;
-} & ((input: Input) => Promise<Payload>);
+// API
 
 export const buildActionCreator: (
   opt?: { prefix?: string }
@@ -35,7 +48,12 @@ export const buildActionCreator: (
   createAsyncAction<Input, Payload>(
     t: string | void,
     fn: (input: Input) => Promise<Payload>
-  ): AsyncAction<Input, Payload>;
+  ): AsyncActionCreator<Input, Payload>;
+
+  createThunkAction<Input, A = any, S = any, R = any>(
+    t: string | void,
+    fn: (input: Input, dispatch: (a: A) => any, getState: () => S) => Promise<R>
+  ): ThunkActionCreator<Input, A, R>;
 };
 
 export const createReducer: <T>(t: T) => Reducer<T>;

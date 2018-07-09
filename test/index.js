@@ -1,4 +1,5 @@
 /* @flow */
-import './flow'
-import './with-redux'
-import './async'
+import "./async";
+import "./flow";
+import "./thunk";
+import "./with-redux";

@@ -12,10 +12,10 @@ yarn add hard-reducer
 
 ## Concepts
 
-* Type safe interface
-* Avoid redundant `type` string definitions
-* Keep reducer interface `(State, Action) => State` to use with `redux.combineReducers()`
-* Handle Flux Standard Action `<Payload>{ type: string, payload: Payload }`
+- Type safe interface
+- Avoid redundant `type` string definitions
+- Keep reducer interface `(State, Action) => State` to use with `redux.combineReducers()`
+- Handle Flux Standard Action `<Payload>{ type: string, payload: Payload }`
 
 Check this code to know detail.
 
@@ -28,58 +28,57 @@ This code is runnable in both flowtype and typescript
 ```js
 /* @flow */
 // ^ flow magic comment to activate. It will be ignored in typescript.
-
 import {
   buildActionCreator,
   createReducer,
   type ActionCreator
-} from 'hard-reducer'
+} from "hard-reducer";
 // ^ If you use typescript, Do not use `type` before ActionCreator
-const { createAction } = buildActionCreator({ prefix: 'counter/' })
+const { createAction } = buildActionCreator({ prefix: "counter/" });
 
 // Add type to your payload by ActionCreator
-const inc: ActionCreator<number> = createAction('inc')
+const inc: ActionCreator<number> = createAction("inc");
 // or infer by function result
-const dec = createAction('dec', (val: number) => val)
+const dec = createAction("dec", (val: number) => val);
 
-inc(1) //=> { type: 'counter/inc', payload: 1 }
+inc(1); //=> { type: 'counter/inc', payload: 1 }
 
 // Define state type
-type State = { value: number }
-const initialState: State = { value: 0 }
+type State = { value: number };
+const initialState: State = { value: 0 };
 
 const reducer = createReducer(initialState)
   // Handle `(State, Payload) => State` in matched context.
   .case(inc, (state, payload) => {
     return {
       value: state.value + payload
-    }
+    };
   })
   .case(dec, (state, payload) => {
     // $ExpectError
-    const p: string = payload
+    const p: string = payload;
     return {
       value: state.value - payload
-    }
+    };
   })
   // Take string
-  .case('other/noop', (state, payload) => {
-    return state
+  .case("other/noop", (state, payload) => {
+    return state;
   })
   // Take all uncaught action, not payload!
   .else((state, action) => {
-    console.log('default fallback')
-    return state
-  })
+    console.log("default fallback");
+    return state;
+  });
 
 // Use it
-const ret0 = reducer(initialState, inc(3))
-const ret1 = reducer(ret1, dec(1))
+const ret0 = reducer(initialState, inc(3));
+const ret1 = reducer(ret1, dec(1));
 ```
 
 See detail in `index.js.flow` or `index.d.ts`
 
-### Handle async action
+### Handle async action: createAsyncAction
 
 `createAsyncAction(...)` returns `{ resolved, rejected, started }` and callable method.
 
@@ -87,63 +86,89 @@ See detail in `index.js.flow` or `index.d.ts`
 
 ```js
 /* @flow */
-import { createReducer, buildActionCreator } from '../'
-const { createAsyncAction } = buildActionCreator()
+import { createReducer, buildActionCreator } from "hard-reducer";
+const { createAsyncAction } = buildActionCreator();
 
-const incAsync = createAsyncAction('inc-async', async (val: number) => {
+const incAsync = createAsyncAction("inc-async", async (val: number) => {
   if (val % 2 === 1) {
-    throw new Error('error')
+    throw new Error("error");
   }
   return {
     p: 1
-  }
-})
+  };
+});
 
-type Status = 'ready' | 'started' | 'resolved' | 'rejected'
-type State = { status: Status, payload: ?{ p: number } }
+type Status = "ready" | "started" | "resolved" | "rejected";
+type State = { status: Status, payload: ?{ p: number } };
 
-const reducer = createReducer({ status: 'ready', payload: null })
+const reducer = createReducer({ status: "ready", payload: null })
   .case(incAsync.started, state => {
-    return { state: 'started' }
+    return { state: "started" };
   })
   .case(incAsync.resolved, (state, payload) => {
-    return { state: 'resolve', payload }
+    return { state: "resolve", payload };
   })
   .case(incAsync.rejected, (state, error) => {
-    return { state: 'ready', payload: null }
-  })
+    return { state: "ready", payload: null };
+  });
 
 // store
-import reduxThunk from 'redux-thunk'
-import { applyMiddleware, createStore } from 'redux'
-const store = createStore(reducer, undefined, applyMiddleware(reduxThunk))
+import reduxThunk from "redux-thunk";
+import { applyMiddleware, createStore } from "redux";
+const store = createStore(reducer, undefined, applyMiddleware(reduxThunk));
 store.subscribe((...args) => {
-  console.log('store', store.getState())
-})
+  console.log("store", store.getState());
+});
 
 // dispatch
-store.dispatch(incAsync(1))
+store.dispatch(incAsync(1));
+```
+
+### Handle thunk action: createThunkAction
+
+`createThunkAction(...)` returns `{ resolved, rejected, started }` and callable method.
+
+(You need to add `redux-thunk` in store's middlewares)
+
+```js
+import { createReducer, buildActionCreator } from "hard-reducer";
+const { createThunkAction, createAction } = buildActionCreator();
+
+const inc = createAction("inc", (val: number) => val);
+
+const thunked = createThunkAction(
+  "thunked",
+  async (input, dispatch, getState) => {
+    dispatch(inc(input.value));
+    return { ret: true };
+  }
+);
+
+// Handle
+createReducer({ status: "ready", payload: null })
+  .case(thunked.started, state => {
+    return { state: "started", payload: null };
+  })
+  .case(thunked.resolved, (state, payload) => {
+    return { state: "resolve", payload };
+  })
+  .case(thunked.rejected, (state, error) => {
+    return { state: "ready", payload: null };
+  });
+
+// dispatch
+store.dispatch(thunked({ value: 1 }));
 ```
 
 ## Related projects
 
-* [reduxactions/redux-actions: Flux Standard Action utilities for Redux.](https://github.com/reduxactions/redux-actions)
-* [aikoven/typescript-fsa: Type-safe action creator utilities](https://github.com/aikoven/typescript-fsa)
-* [acdlite/flux-standard-action: A human-friendly standard for Flux action objects.](https://github.com/acdlite/flux-standard-action)
+- [reduxactions/redux-actions: Flux Standard Action utilities for Redux.](https://github.com/reduxactions/redux-actions)
+- [aikoven/typescript-fsa: Type-safe action creator utilities](https://github.com/aikoven/typescript-fsa)
+- [acdlite/flux-standard-action: A human-friendly standard for Flux action objects.](https://github.com/acdlite/flux-standard-action)
 
 ## ChangeLog
 
-### v2.0.0
-
-* Add `createAsyncAction(...)`
-* Remove `createPromiseAction(...)`
-* Remove `Reducer.case(...)`
-
-### v1.0.0
-
-* Add `ActionCreator<Payload>` with one argument
-* `createAction(string)` uses `i => i` as default creator function
-* Rename `reducer._(...)` => `reducer.else(...)`
+See [ChangeLog.md](ChangeLog.md)
 
 ## LICENSE
 

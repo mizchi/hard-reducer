@@ -1,5 +1,9 @@
 import { ActionCreator, buildActionCreator, createReducer, Reducer } from "../";
-const { createAction, createAsyncAction } = buildActionCreator({
+const {
+  createAction,
+  createAsyncAction,
+  createThunkAction
+} = buildActionCreator({
   prefix: "counter/"
 });
 
@@ -8,6 +12,28 @@ const inc = createAction("inc", (val: number) => val);
 const dec = createAction("dec", (val: number) => val);
 // typed with ActionCreator
 const foo: ActionCreator<{ foo: number }> = createAction("foo");
+
+const thunked = createThunkAction(
+  "thunked",
+  async (input: { value: number }, dispatch, getState) => {
+    dispatch(inc(input.value));
+    dispatch(dec(input.value));
+    dispatch(inc(input.value));
+    return getState();
+  }
+);
+
+const thunked2 = createThunkAction<
+  { value: number },
+  any,
+  any,
+  { ret: boolean }
+>("thunked2", async (input, dispatch, getState) => {
+  dispatch(inc(input.value));
+  dispatch(dec(input.value));
+  dispatch(inc(input.value));
+  return { ret: true };
+});
 
 const _type: string = inc.type;
 
@@ -71,3 +97,5 @@ const ret1 = reducer(ret0, dec(1));
 assert(ret0.value === 3);
 assert(ret1.value === 2);
 assert(inc(1).type === "counter/inc");
+
+thunked2({ value: 1 });
