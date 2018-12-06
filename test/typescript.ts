@@ -35,6 +35,16 @@ const thunked2 = createThunkAction<
   return { ret: true };
 });
 
+const thunkedNoArgs = createThunkAction(
+  "thunked-noargs",
+  async (_input: void, dispatch, getState) => {
+    dispatch(inc(0));
+    dispatch(dec(0));
+    dispatch(inc(0));
+    return getState();
+  }
+);
+
 const _type: string = inc.type;
 
 const incAsync = createAsyncAction("inc-async", async (val: number) => {
@@ -42,6 +52,15 @@ const incAsync = createAsyncAction("inc-async", async (val: number) => {
 });
 
 inc(1); //=> { type: 'counter/inc', payload: 1 }
+
+const asyncWithNoArgs = createAsyncAction(
+  "async-noargs",
+  async (_val: void) => {
+    return [1, 2, 3];
+  }
+);
+
+asyncWithNoArgs();
 
 type State = { value: number };
 
@@ -99,3 +118,4 @@ assert(ret1.value === 2);
 assert(inc(1).type === "counter/inc");
 
 thunked2({ value: 1 });
+thunkedNoArgs();

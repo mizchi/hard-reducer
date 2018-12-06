@@ -12,17 +12,21 @@ export type ActionCreator<Input, Payload = Input> = {
   type: string;
 };
 
+type AsyncCallable<Input, Payload> = Input extends void
+  ? () => Promise<Payload>
+  : (input: Input) => Promise<Payload>;
+
 export type AsyncActionCreator<Input, Payload> = {
   started: ActionCreator<Input, void>;
   resolved: ActionCreator<Input, Payload>;
   rejected: ActionCreator<Input, Error>;
-} & ((input: Input) => Promise<Payload>);
+} & AsyncCallable<Input, Payload>;
 
 export type ThunkActionCreator<Input, A = any, R = any> = {
   started: ActionCreator<Input, void>;
   resolved: ActionCreator<Input, R>;
   rejected: ActionCreator<Input, Error>;
-} & ((input: Input) => void);
+} & AsyncCallable<Input, void>;
 
 // Reducer helper
 export type Reducer<State> = {
