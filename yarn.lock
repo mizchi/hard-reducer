@@ -1370,9 +1370,10 @@ find-up@^2.1.0:
   dependencies:
     locate-path "^2.0.0"
 
-flow-bin@^0.85.0:
-  version "0.85.0"
-  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.85.0.tgz#a3ca80748a35a071d5bbb2fcd61d64d977fc53a6"
+flow-bin@^0.90.0:
+  version "0.90.0"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.90.0.tgz#733b6d29a8c8a22b9a5d273611d9a8402faf3445"
+  integrity sha512-/syDchjhLLL7nELK1ggyWJifGXuMCTz74kvkjR1t9DcmasMrilLl9qAAotsACcNb98etEEJpsCrvP7WL64kadw==
 
 flux-standard-action@^2.0.3:
   version "2.0.3"
