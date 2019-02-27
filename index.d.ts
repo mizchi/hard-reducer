@@ -30,7 +30,7 @@ export type ThunkActionCreator<Input, A = any, R = any> = {
 
 // Reducer helper
 export type Reducer<State> = {
-  (state: State, action: any): State;
+  (state: State | undefined, action: any): State;
   get: () => Reducer<State>;
   case<Input, Payload>(
     actionFunc: ActionCreator<Input, Payload>,
