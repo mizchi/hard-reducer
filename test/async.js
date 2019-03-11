@@ -36,7 +36,10 @@ store.subscribe((...args) => {
 const test = async () => {
   await store.dispatch(incAsync(2));
   await store.dispatch(incAsync(4));
-  await store.dispatch(incAsync(13));
+  await store.dispatch(
+    incAsync(13)
+      .catch(err => console.log())
+);
 };
 
 test();

@@ -41,9 +41,11 @@ export default function buildActionCreator(opts: { prefix?: string } = {}) {
         return Promise.resolve(fn(input, dispatch, getState))
           .then(payload => {
             dispatch({ type: resolved, payload });
+            return payload;
           })
           .catch(error => {
             dispatch({ type: rejected, payload: error, error: true });
+            return Promise.reject(error);
           });
       };
     };
@@ -80,9 +82,11 @@ export default function buildActionCreator(opts: { prefix?: string } = {}) {
         })
         .catch(err => {
           dispatch({
-            type: rejected
+            type: rejected,
+            payload: err,
+            error: true
           });
-          return err;
+          return Promise.reject(err);
         });
     };
 
