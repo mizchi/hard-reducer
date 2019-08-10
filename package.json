@@ -17,7 +17,7 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-flow": "^6.23.0",
-    "flow-bin": "^0.88.0",
+    "flow-bin": "^0.105.0",
     "npm-run-all": "^4.1.2",
     "nyc": "^13.2.0",
     "prettier": "^1.13.7",
