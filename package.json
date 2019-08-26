@@ -21,7 +21,7 @@
     "npm-run-all": "^4.1.2",
     "nyc": "^13.2.0",
     "prettier": "^1.13.7",
-    "react-redux": "^6.0.0",
+    "react-redux": "^7.1.1",
     "redux": "^4.0.1",
     "redux-promise": "^0.6.0",
     "redux-thunk": "^2.2.0",
