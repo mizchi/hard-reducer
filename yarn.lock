@@ -97,10 +97,10 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@types/node@^10.3.2":
-  version "10.12.12"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.12.12.tgz#e15a9d034d9210f00320ef718a50c4a799417c47"
-  integrity sha512-Pr+6JRiKkfsFvmU/LK68oBRCQeEg36TyAbPhc2xpez24OOZZCuoIhWGTd39VZy6nGafSbxzGouFPTFD/rR1A0A==
+"@types/node@^12.12.13":
+  version "12.12.13"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.13.tgz#9790d9bbb99cda1ff077bcef37bee3d60281c175"
+  integrity sha512-fXr0NLUGMwrKj7Achj/jQfnZco024Lbmn5AT7uG846gb+mPL/zxh3mXTnadf4fLJM/tFWVauIadQ/uCa8LCzkg==
 
 abbrev@1:
   version "1.1.1"
