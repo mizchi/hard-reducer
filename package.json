@@ -12,7 +12,7 @@
     "build": "babel src -d lib"
   },
   "devDependencies": {
-    "@types/node": "^11.9.0",
+    "@types/node": "^13.7.6",
     "babel-cli": "^6.26.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
