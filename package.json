@@ -19,7 +19,7 @@
     "babel-preset-flow": "^6.23.0",
     "flow-bin": "^0.88.0",
     "npm-run-all": "^4.1.2",
-    "nyc": "^13.2.0",
+    "nyc": "^15.0.1",
     "prettier": "^1.13.7",
     "react-redux": "^6.0.0",
     "redux": "^4.0.1",
